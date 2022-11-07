@@ -5,6 +5,7 @@ import { ImageGallery } from './ImageGallery';
 import { Button } from './Button';
 import { Box } from './App.styled';
 import { Blocks } from 'react-loader-spinner';
+import { Modal } from './Modal';
 // import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
 export class App extends Component {
@@ -14,19 +15,15 @@ export class App extends Component {
     images: [],
     error: false,
     isLoading: false,
+    showModal: false,
   };
 
   async componentDidUpdate(_, prevState) {
-    if (
-      prevState.page !== this.state.page
-      // prevState.page !== this.state.page ||
-      // prevState.query !== this.state.query
-    ) {
+    if (prevState.page !== this.state.page) {
       try {
         this.setState({ isLoading: true });
         const images = await API.getImages(this.state.query, this.state.page);
-
-        this.setState(prevState => ({
+        this.setState(() => ({
           images: [...this.state.images, ...images.hits],
           isLoading: false,
         }));
@@ -54,21 +51,43 @@ export class App extends Component {
     this.setState(prevState => ({ page: prevState.page + 1 }));
   };
 
+  toggleModal = () => {
+    this.setState(({ showModal }) => ({
+      showModal: !showModal,
+    }));
+  };
+
+  fonKeydown = e => {
+    console.log(e);
+  };
+
+  handleImgClick = e => {
+    console.log('Кликнули в IMG');
+    // console.log('currentTarget: ', event.currentTarget);
+    // console.log('target: ', event.target);
+    // if (event.currentTarget === event.target) {
+    //   this.props.onClose();
+    // }
+  };
+
   render() {
     const availabilityImages = this.state.images.length > 0 ? true : false;
 
     return (
       <Box>
         <Searchbar onSubmit={this.handleFormSubmit} />
-        <ImageGallery images={this.state.images} />
+        <ImageGallery
+          images={this.state.images}
+          onClick={this.handleImgClick}
+        />
         <Button onLoadMore={this.loadMore} isImages={availabilityImages} />
         <Blocks
-          visible={true}
-          // visible={this.state.isLoading}
+          visible={this.state.isLoading}
           height="80"
           width="80"
           ariaLabel="blocks-loading"
         />
+        {this.state.showModal && <Modal onClose={this.toggleModal} />}
       </Box>
     );
   }
