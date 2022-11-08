@@ -1,7 +1,7 @@
 import { ImageGalleryItem } from '../ImageGalleryItem';
 import { Gallery, GalleryItem } from './ImageGallery.styled';
 
-export const ImageGallery = ({ images }) => {
+export const ImageGallery = ({ images, onClick }) => {
   return (
     <Gallery>
       {images &&
@@ -9,7 +9,8 @@ export const ImageGallery = ({ images }) => {
           <GalleryItem key={image.id}>
             <ImageGalleryItem
               link={image.webformatURL}
-              description={image.tags}
+              tags={image.tags}
+              onClick={() => onClick(image.largeImageURL, image.tags)}
             />
           </GalleryItem>
         ))}

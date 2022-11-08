@@ -1,12 +1,10 @@
 import { ButtonLoadMore } from './Button.styled';
 
-export const Button = ({ onLoadMore, isImages }) => {
+export const Button = ({ onLoadMore }) => {
   return (
-    isImages && (
-      <ButtonLoadMore onClick={onLoadMore} type="button">
-        Load more
-      </ButtonLoadMore>
-    )
+    <ButtonLoadMore onClick={onLoadMore} type="button">
+      Load more
+    </ButtonLoadMore>
   );
 };
 
