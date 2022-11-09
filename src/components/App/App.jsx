@@ -18,6 +18,7 @@ export class App extends Component {
     isLoading: false,
     showModal: false,
     currImg: null,
+    showLoadMore: false,
   };
 
   async componentDidUpdate(_, prevState) {
@@ -32,6 +33,14 @@ export class App extends Component {
         this.setState({ isLoading: true });
 
         const images = await API.getImages(nextQuery, nextPage);
+
+        if (images.totalHits > API.perPage) {
+          this.setState({ showLoadMore: true });
+        }
+
+        if (nextPage + 1 > Math.ceil(images.totalHits / API.perPage)) {
+          this.setState({ isLoading: false, showLoadMore: false });
+        }
 
         if (images.total === 0) {
           toast.warn('Your search did not return any results.', {
@@ -95,13 +104,14 @@ export class App extends Component {
   };
 
   render() {
-    const { images, isLoading, showModal, currImg, error } = this.state;
+    const { images, isLoading, showModal, currImg, error, showLoadMore } =
+      this.state;
 
     return (
       <Box>
         <Searchbar onSubmit={this.handleFormSubmit} />
         <ImageGallery images={images} onClick={this.handleImgClick} />
-        {images.length > 0 && <Button onLoadMore={this.loadMore} />}
+        {showLoadMore && <Button onLoadMore={this.loadMore} />}
         <Loader isLoading={isLoading} />
         {showModal && (
           <Modal
