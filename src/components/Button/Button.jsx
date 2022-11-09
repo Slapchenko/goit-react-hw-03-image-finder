@@ -7,11 +7,3 @@ export const Button = ({ onLoadMore }) => {
     </ButtonLoadMore>
   );
 };
-
-// export const Button = ({ onLoadMore }) => {
-//    (
-//     <ButtonLoadMore onClick={onLoadMore} type="button">
-//       Load more
-//     </ButtonLoadMore>
-//   );
-// };

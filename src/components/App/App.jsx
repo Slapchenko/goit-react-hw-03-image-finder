@@ -1,11 +1,11 @@
 import { Component } from 'react';
 import { Box } from './App.styled';
-import { Searchbar } from './Searchbar';
-import { ImageGallery } from './ImageGallery';
-import { Button } from './Button';
-import { ThreeDots } from 'react-loader-spinner';
-import { Modal } from './Modal';
-import * as API from '../services/api';
+import { Searchbar } from '../Searchbar';
+import { ImageGallery } from '../ImageGallery';
+import { Button } from '../Button';
+import { Loader } from 'components/Loader';
+import { Modal } from '../Modal';
+import * as API from '../../services/api';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -102,14 +102,7 @@ export class App extends Component {
         <Searchbar onSubmit={this.handleFormSubmit} />
         <ImageGallery images={images} onClick={this.handleImgClick} />
         {images.length > 0 && <Button onLoadMore={this.loadMore} />}
-        <ThreeDots
-          height="40"
-          width="40"
-          radius="9"
-          color="#3f51b5"
-          ariaLabel="three-dots-loading"
-          visible={isLoading}
-        />
+        <Loader isLoading={isLoading} />
         {showModal && (
           <Modal
             onClose={this.toggleModal}
